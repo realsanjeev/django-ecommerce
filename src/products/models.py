@@ -12,20 +12,18 @@ LABEL_CHOICES = (
     ('D', 'danger')
 )
 
-class products(models.Model):
+class Product(models.Model):
     title = models.CharField(max_length=128)
     description = models.TextField()
-    price = models.FloatField()
-    category = models.CharField(choices=CATEGORY_CHOICES)
-    label = models.CharField(choices=LABEL_CHOICES)
+    price = models.DecimalField(default=9.90, max_digits=8, decimal_places=2)
+    category = models.CharField(choices=CATEGORY_CHOICES, max_length=2)
+    label = models.CharField(choices=LABEL_CHOICES, max_length=1)
     slug = models.SlugField()
-    image = models.ImageField()
+    image = models.ImageField(upload_to='product_images/')
 
     def __str__(self):
         return self.title
     
     def get_absolute_url(self):
-        '''absolute url of a product'''
-        return 
-    
-    
+        # Replace the following line with your actual logic for generating the URL
+        return f'/products/{self.slug}/'

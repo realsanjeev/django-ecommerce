@@ -45,7 +45,11 @@ INSTALLED_APPS = [
 
     # django app
     "accounts",
+    "products",
+    "orders",
+    "payments",
 ]
+
 AUTH_USER_MODEL = "accounts.UserProfile"
 
 AUTHENTICATION_BACKENDS = [
