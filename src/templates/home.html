@@ -214,9 +214,10 @@
               <!--Card content-->
               <div class="card-body text-center">
                 <!--Category & Title-->
-                <a href="" class="grey-text">
+                <a href="{% url 'product:product-detail' slug=product.slug %}" class="grey-text">
                   <h5>{{ product.get_category_display }}</h5>
-                </a>
+              </a>
+              
                 <h5>
                   <strong>
                     <a href="" class="dark-grey-text">{{ product.title }}

@@ -1,119 +1,69 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-  <main class="mt-5 pt-4">
-    <div class="container dark-grey-text mt-5">
-
-      <!--Grid row-->
-      <div class="row wow fadeIn">
-
-        <!--Grid column-->
-        <div class="col-md-6 mb-4">
-
-          <img src="{{ product.image.url }}" class="img-fluid" alt="">
-
-        </div>
-        <!--Grid column-->
-
-        <!--Grid column-->
-        <div class="col-md-6 mb-4">
-
-          <!--Content-->
-          <div class="p-4">
-
-            <div class="mb-3">
-              <a href="">
-                <span class="badge purple mr-1">{{ product.title }}</span>
-              </a>
-              <a href="">
-                <span class="badge blue mr-1">New</span>
-              </a>
-              <a href="">
-                <span class="badge red mr-1">Bestseller</span>
-              </a>
+<main class="mt-5 pt-4">
+    <div class="container mt-5">
+        <!-- Grid Row -->
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <img src="{{ product.image.url }}" class="img-fluid" alt="{{ product.title }}">
             </div>
 
-            <p class="lead">
-              <!-- <span class="mr-1">
-                <del>${{ product.price }}</del>
-              </span> -->
-              <span>${{ product.price }}</span>
-            </p>
+            <div class="col-md-6 mb-4">
+                <div class="p-4">
+                    <div class="mb-3">
+                        <div class="mb-3">
+                            <span class="badge bg-secondary text-white bg-opacity-75">{{ product.title }}</span>
+                            <span class="badge bg-primary text-white bg-opacity-75">New</span>
+                            <span class="badge bg-danger text-white bg-opacity-75">Bestseller</span>
+                          </div>
+                          
 
-            <p class="lead font-weight-bold">Description</p>
+                    <p class="lead">
+                        <span class="text-decoration-line-through me-1">${{ product.price }}</span>
+                        <span class="fw-bold">${{ product.price }}</span>
+                    </p>
+                    <!-- description  -->
+                    <p class="lead font-weight-bold">Description</p>
+                    <p>{{ product.description }}</p>
 
-            <p>{{ product.description }}</p>
+                    <form class="d-flex justify-content-start">
+                        <input type="number" value="1" aria-label="Search" class="form-control" style="width: 100px">
+                        <button class="btn btn-primary btn-md ms-2" type="submit">Add to cart <i
+                                class="fas fa-shopping-cart ms-1"></i></button>
+                    </form>
 
-            <form class="d-flex justify-content-left">
-              <!-- Default input -->
-              <input type="number" value="1" aria-label="Search" class="form-control" style="width: 100px">
-              <button class="btn btn-primary btn-md my-0 p" type="submit">Add to cart
-                <i class="fas fa-shopping-cart ml-1"></i>
-              </button>
-
-            </form>
-
-          </div>
-          <!--Content-->
-
+                </div>
+            </div>
         </div>
-        <!--Grid column-->
 
-      </div>
-      <!--Grid row-->
-
-      <hr>
-
-      <!--Grid row-->
-      <div class="row d-flex justify-content-center wow fadeIn">
-
-        <!--Grid column-->
-        <div class="col-md-6 text-center">
-
-          <h4 class="my-4 h4">Additional information</h4>
-
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus suscipit modi sapiente illo soluta odit
-            voluptates,
-            quibusdam officia. Neque quibusdam quas a quis porro? Molestias illo neque eum in laborum.</p>
-
+        <hr>
+        <!-- grid row -->
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-6 text-center">
+                <h4 class="my-4 h4">Additional information</h4>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus suscipit modi sapiente illo soluta
+                    odit
+                    voluptates, quibusdam officia. Neque quibusdam quas a quis porro? Molestias illo neque eum in
+                    laborum.</p>
+            </div>
         </div>
-        <!--Grid column-->
 
-      </div>
-      <!--Grid row-->
-
-      <!--Grid row-->
-      <div class="row wow fadeIn">
-
-        <!--Grid column-->
-        <div class="col-lg-4 col-md-12 mb-4">
-
-          <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/11.jpg" class="img-fluid" alt="">
-
+        <div class="row">
+            <div class="col-lg-4 col-md-12 mb-4">
+                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/11.jpg" class="img-fluid"
+                    alt="">
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/12.jpg" class="img-fluid"
+                    alt="">
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/13.jpg" class="img-fluid"
+                    alt="">
+            </div>
         </div>
-        <!--Grid column-->
-
-        <!--Grid column-->
-        <div class="col-lg-4 col-md-6 mb-4">
-
-          <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/12.jpg" class="img-fluid" alt="">
-
-        </div>
-        <!--Grid column-->
-
-        <!--Grid column-->
-        <div class="col-lg-4 col-md-6 mb-4">
-
-          <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/13.jpg" class="img-fluid" alt="">
-
-        </div>
-        <!--Grid column-->
-
-      </div>
-      <!--Grid row-->
 
     </div>
-  </main>
-
+</main>
 {% endblock content %}
