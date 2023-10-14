@@ -1,4 +1,5 @@
 from django.db import models
+from django.shortcuts import reverse
 
 CATEGORY_CHOICES = (
     ('S', 'Shirt'),
@@ -26,4 +27,4 @@ class Product(models.Model):
     
     def get_absolute_url(self):
         # Replace the following line with your actual logic for generating the URL
-        return f'/products/{self.slug}/'
+        return reverse("product:product-detail", kwargs={'slug': self.slug})
