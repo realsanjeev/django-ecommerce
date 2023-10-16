@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "products",
     "orders",
     "payments",
+    "address",
 ]
 
 AUTH_USER_MODEL = "accounts.UserProfile"
