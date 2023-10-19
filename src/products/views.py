@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
+from django.contrib import messages
 
 from .models import Product
 from orders.models import OrderProduct, Order
@@ -38,3 +39,28 @@ def add_to_cart(request, slug):
         order.products.add(order_product)
         return redirect("product:product-detail", slug=slug)
 
+def remove_from_cart(request, slug):
+    product = get_object_or_404(Product, slug=slug)
+    order_qs = Order.objects.filter(
+        user=request.user,
+        ordered=False
+    )
+    if order_qs.exists():
+        order = order_qs.first()
+        # check if the order product is in order
+        if order.products.filter(product__slug=product.slug).exists():
+            order_product = OrderProduct.objects.filter(
+                product=product,
+                user=request.user,
+                ordered=False
+            ).first()
+            order.products.remove(order_product)
+            order_product.delete()
+            messages.info(request, "This item was from your cart.")
+            return redirect('product:product-detail', slug=slug)
+        else:
+            messages.warning(request, "This item was not in your cart")
+            return redirect("product:product-detail", slug=slug)
+    else:
+        messages.info(request, "You donot have an active order")
+        return redirect("product:product-detail", slug=slug)

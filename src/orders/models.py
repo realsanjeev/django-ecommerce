@@ -11,10 +11,13 @@ class OrderProduct(models.Model):
     quantity = models.IntegerField(default=1)
 
     def __str__(self) -> str:
-        return f"{self.quantity}"
+        return f"{self.quantity} of {self.product.title}"
     
     def get_total_product_price(self):
         return self.quantity * self.product.price
+    
+    class Meta:
+        verbose_name_plural = "Order Product"
     
 
 class Order(models.Model):
