@@ -25,8 +25,8 @@ admin.site.site_header = "Ecommerce Admin"
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
-    path('', include('accounts.urls')),
     path('product/', include('products.urls')),
+    path('', include('accounts.urls')),
 ]
 
 if settings.DEBUG:

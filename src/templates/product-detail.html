@@ -27,12 +27,19 @@
                         <p class="lead font-weight-bold">Description</p>
                         <p>{{ product.description }}</p>
 
-                        <form class="d-flex justify-content-start">
+                        <!-- <form class="d-flex justify-content-start">
                             <input type="number" value="1" aria-label="Search" class="form-control"
                                 style="width: 100px">
                             <button class="btn btn-primary btn-md ms-2" type="submit">Add to cart <i
                                     class="fas fa-shopping-cart ms-1"></i></button>
-                        </form>
+                        </form> -->
+                        {{ product.get_add_to_cart_url }}
+                        <a href="{{ product.get_add_to_cart_url }}" class="d-flex justify-content-start">
+                            <input type="number" value="1" aria-label="Search" class="form-control"
+                                style="width: 100px">
+                            <button class="btn btn-primary btn-md ms-2" type="submit">Add to cart <i
+                                    class="fas fa-shopping-cart ms-1"></i></button>
+                        </a>
 
                     </div>
                 </div>
@@ -43,10 +50,10 @@
             <div class="row d-flex justify-content-center">
                 <div class="col-md-6 text-center">
                     <h4 class="my-4 h4">Additional information</h4>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus suscipit modi sapiente illo soluta
-                        odit
-                        voluptates, quibusdam officia. Neque quibusdam quas a quis porro? Molestias illo neque eum in
-                        laborum.</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et, perspiciatis atque velit, suscipit, deserunt odio iusto dolorum autem eveniet aperiam tempora ducimus itaque. Hic libero maxime accusamus blanditiis tempora vero!
+
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi veritatis reiciendis esse at, perferendis velit nostrum obcaecati quisquam doloribus tenetur aspernatur, omnis, corporis quod ducimus libero. Deserunt similique recusandae maiores.
+                    </p>
                 </div>
             </div>
 

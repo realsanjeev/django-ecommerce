@@ -28,3 +28,6 @@ class Product(models.Model):
     def get_absolute_url(self):
         # Replace the following line with your actual logic for generating the URL
         return reverse("product:product-detail", kwargs={'slug': self.slug})
+    
+    def get_add_to_cart_url(self):
+        return reverse("product:add-to-cart", kwargs={'slug':self.slug})
