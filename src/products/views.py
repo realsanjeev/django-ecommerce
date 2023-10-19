@@ -13,8 +13,6 @@ def product_detail(request, *args, **kwargs):
     return render(request, template_name, context)
 
 def add_to_cart(request, slug):
-    print("_"*43)
-    print("*"*21, 'add to cart')
     product = get_object_or_404(Product, slug=slug)
     ordered_date = timezone.now()
     order_product, created = OrderProduct.objects.get_or_create(
@@ -30,9 +28,12 @@ def add_to_cart(request, slug):
         if order.products.filter(product__slug=product.slug).exists():
             order_product.quantity += 1
             order_product.save()
+            msg = f"Cart now has this product with quantity {order_product.quantity}....."
+            messages.success(request, message=msg)
             return redirect("product:product-detail", slug=slug)
         else:
             order.products.add(order_product)
+            messages.info(request, "Product is added to cart....")
             return redirect("product:product-detail", slug=slug)
     else:
         order = Order.objects.create(user=request.user, ordered_date=ordered_date)
@@ -56,11 +57,11 @@ def remove_from_cart(request, slug):
             ).first()
             order.products.remove(order_product)
             order_product.delete()
-            messages.info(request, "This item was from your cart.")
+            messages.info(request, "This product is deleted from cart.")
             return redirect('product:product-detail', slug=slug)
         else:
             messages.warning(request, "This item was not in your cart")
             return redirect("product:product-detail", slug=slug)
     else:
-        messages.info(request, "You donot have an active order")
+        messages.error(request, "You donot have an active order")
         return redirect("product:product-detail", slug=slug)
