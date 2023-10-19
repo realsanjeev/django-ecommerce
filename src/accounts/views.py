@@ -8,7 +8,7 @@ from address.models import Address
 class HomeView(ListView):
     template_name = "home.html"
     model = Product
-    paginate_by = 2
+    paginate_by = 1
     # overrides objects_list key to user_defined key
     context_object_name = "products"
 
