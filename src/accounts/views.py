@@ -1,15 +1,23 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth import logout
+from django.views.generic import ListView
 
 from products.models import Product
 from address.models import Address
 
-def home(request):
-    context = {
-        "products": Product.objects.all()
-    }
-    print(context)
-    return render(request, 'home.html', context=context)
+class HomeView(ListView):
+    template_name = "home.html"
+    model = Product
+    paginate_by = 2
+    # overrides objects_list key to user_defined key
+    context_object_name = "products"
+
 
 def checkout_view(request):
     template_name = 'checkout.html'
     return render(request, template_name)
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')

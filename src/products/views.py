@@ -6,7 +6,7 @@ from .models import Product
 from orders.models import OrderProduct, Order
 
 def product_detail(request, *args, **kwargs):
-    template_name = "product-detail.html"  # Adjust this path
+    template_name = "product-detail.html" 
     slug = kwargs.get("slug", None)
     product = Product.objects.get(slug=slug)
     context = {"product": product}
@@ -57,7 +57,7 @@ def remove_from_cart(request, slug):
             ).first()
             order.products.remove(order_product)
             order_product.delete()
-            messages.info(request, "This product is deleted from cart.")
+            messages.warning(request, "This product is deleted from cart.")
             return redirect('product:product-detail', slug=slug)
         else:
             messages.warning(request, "This item was not in your cart")
