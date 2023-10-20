@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <main class="mt-5 pt-4">
+    <div class="container mt-5">
+        <strong><h1>Order Summary</h1></strong>
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Product Title</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Total Price</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for order_product in order.products.all %}
+              <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ order_product.product.title }}</td>
+                <td>${{ order_product.product.price }}</td>
+                <td>{{ order_product.quantity }}</td>
+                <!-- multiply in built template -->
+                <td>${% widthratio order_product.product.price 1 order_product.quantity %}</td>
+              </tr>
+              
+              {% empty %}
+              <tr>
+              <td colspan="4"><a href="/" class="btn btn-warning">Continue Shoping</a></td>
+              </tr>
+              {% endfor %}
+              <tr>
+                <td colspan="4"><strong>Total</strong></td>
+                <td><strong>$33</strong></td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+  </main>
+
+{% endblock content %}
