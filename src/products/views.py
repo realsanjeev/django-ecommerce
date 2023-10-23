@@ -28,17 +28,17 @@ def add_to_cart(request, slug):
         if order.products.filter(product__slug=product.slug).exists():
             order_product.quantity += 1
             order_product.save()
-            msg = f"Cart now has this product with quantity {order_product.quantity}....."
+            msg = f"Cart now has {order_product.product.title} with quantity {order_product.quantity}....."
             messages.success(request, message=msg)
-            return redirect("product:product-detail", slug=slug)
+            return redirect("order:order-summary")
         else:
             order.products.add(order_product)
             messages.info(request, "Product is added to cart....")
-            return redirect("product:product-detail", slug=slug)
+            return redirect("order:order-summary")
     else:
         order = Order.objects.create(user=request.user, ordered_date=ordered_date)
         order.products.add(order_product)
-        return redirect("product:product-detail", slug=slug)
+        return redirect("order:order-summary")
 
 def remove_from_cart(request, slug):
     product = get_object_or_404(Product, slug=slug)
@@ -56,9 +56,8 @@ def remove_from_cart(request, slug):
                 ordered=False
             ).first()
             order.products.remove(order_product)
-            order_product.delete()
             messages.warning(request, "This product is deleted from cart.")
-            return redirect('product:product-detail', slug=slug)
+            return redirect("order:order-summary")
         else:
             messages.warning(request, "This item was not in your cart")
             return redirect("product:product-detail", slug=slug)

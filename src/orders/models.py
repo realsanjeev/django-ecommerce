@@ -24,10 +24,15 @@ class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     products = models.ManyToManyField(OrderProduct)
     start_date = models.DateTimeField(auto_now_add=True)
-    ordered_date =models.DateTimeField()
+    ordered_date = models.DateTimeField()
     ordered = models.BooleanField(default=False)
     received = models.BooleanField(default=False)
-    
 
     def __str__(self):
         return self.user.email
+
+    def get_total_price(self):
+        total = 0
+        for ordered_product in self.products.all():
+            total += ordered_product.get_total_product_price()
+        return total

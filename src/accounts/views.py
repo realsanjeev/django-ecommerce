@@ -11,6 +11,8 @@ class HomeView(ListView):
     paginate_by = 1
     # overrides objects_list key to user_defined key
     context_object_name = "products"
+    # for consistent result in pagination
+    ordering = ['image']
 
 
 def checkout_view(request):
