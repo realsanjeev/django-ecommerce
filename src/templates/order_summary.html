@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load arithmetic_operator %}
 {% block content %}
   <main class="mt-5 pt-4">
     <div class="container mt-5">
@@ -18,13 +18,14 @@
                 {% for order_product in order.products.all %}
               <tr>
                 <th scope="row">{{ forloop.counter }}</th>
-                <td>{{ order_product.product.title }}</td>
+                <td>{{ order_product.product.title }} <a href="{{ order_product.product.get_absolute_url }}" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square" style="color: #0058f0;"></i></td>
                 <td>${{ order_product.product.price }}</td>
                 <td><a href="{{ order_product.product.get_remove_from_cart_url }}"><i class="fa-regular fa-subtract" style="color: #e70d0d;"></i></a>
                   {{ order_product.quantity }}
                   <a href="{{ order_product.product.get_add_to_cart_url }}"><i class="fa-regular fa-plus" style="color: #16f406;"></i></a></td>
                 <!-- multiply in built template -->
-                <td>${% widthratio order_product.product.price 1 order_product.quantity %}</td>
+                <!-- <td>${% widthratio order_product.product.price 1 order_product.quantity %}</td> -->
+                <td>${{ order_product.quantity| multiply:order_product.product.price }}</td>
               </tr>
               
               {% empty %}
@@ -39,7 +40,7 @@
               {% endfor %}
               {% if order.get_total_price %}
               <tr>
-                <td colspan="4"><strong>Total</strong></td>
+                <td colspan="4"><strong  class="float-end">Total</strong></td>
                 <td><strong>${{ order.get_total_price }}</strong></td>
               </tr>
               <tr>

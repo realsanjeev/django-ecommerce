@@ -3,4 +3,5 @@ pillow
 django-allauth
 django_countries
 django-crispy-forms
+django-dotenv
 crispy-bootstrap5

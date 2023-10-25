@@ -55,11 +55,20 @@ def remove_from_cart(request, slug):
                 user=request.user,
                 ordered=False
             ).first()
-            order.products.remove(order_product)
-            messages.warning(request, "This product is deleted from cart.")
+            if order_product.quantity == 1:
+                order.products.remove(order_product)
+                # remove product from order and delete its instance
+                order_product.delete()
+                messages.warning(request, "This product is deleted from cart.")
+            else:
+                order_product.quantity -= 1
+                msg = f"{order_product.product.title} is reduced by 1. Now total {order_product.product.title} is {order_product.quantity}"
+                # save the updated instance of product in order
+                order_product.save()
+                messages.warning(request, msg)
             return redirect("order:order-summary")
         else:
-            messages.warning(request, "This item was not in your cart")
+            messages.error(request, "This item was not in your cart")
             return redirect("product:product-detail", slug=slug)
     else:
         messages.error(request, "You donot have an active order")
