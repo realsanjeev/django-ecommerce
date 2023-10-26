@@ -13,9 +13,18 @@ class OrderProduct(models.Model):
     def __str__(self) -> str:
         return f"{self.quantity} of {self.product.title}"
     
-    def get_total_product_price(self):
+    def get_total_orginal_product_price(self):
         return self.quantity * self.product.price
     
+    def get_total_discounted_product_price(self):
+        return self.quantity * self.product.discounted_price
+    
+    def get_total_product_price(self):
+        if self.get_total_discounted_product_price() > 0:
+            return self.get_total_discounted_product_price()
+        else:
+            return self.get_total_orginal_product_price()
+
     class Meta:
         verbose_name_plural = "Order Product"
     

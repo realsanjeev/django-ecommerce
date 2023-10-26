@@ -21,8 +21,12 @@
 
 
                         <p class="lead">
-                            <span class="text-decoration-line-through me-1">${{ product.price }}</span>
+                            {% if product.discounted_price > 0 %}
+                            <span class="text-decoration-line-through me-1">${{ product.discounted_price }}</span>
                             <span class="fw-bold">${{ product.price }}</span>
+                            {% else %}
+                            <span class="fw-bold">${{ product.price }}</span>
+                            {% endif %}
                         </p>
                         <!-- description  -->
                         <p class="lead font-weight-bold">Description</p>
