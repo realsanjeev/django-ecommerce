@@ -15,15 +15,17 @@
                     <div class="mb-3">
                         <div class="mb-3">
                             <span class="badge bg-secondary text-white bg-opacity-75">{{ product.title }}</span>
-                            <span class="badge bg-primary text-white bg-opacity-75">New</span>
-                            <span class="badge bg-danger text-white bg-opacity-75">Bestseller</span>
+                            <span class="badge bg-primary text-white bg-opacity-75">{{ product.get_category_display
+                                }}</span>
+                            <span class="badge bg-danger text-white bg-opacity-75">{{ product.get_label_display
+                                }}</span>
                         </div>
 
 
                         <p class="lead">
                             {% if product.discounted_price > 0 %}
-                            <span class="text-decoration-line-through me-1">${{ product.discounted_price }}</span>
-                            <span class="fw-bold">${{ product.price }}</span>
+                            <span class="text-decoration-line-through me-1">${{ product.price }}</span>
+                            <span class="fw-bold">${{ product.discounted_price }}</span>
                             {% else %}
                             <span class="fw-bold">${{ product.price }}</span>
                             {% endif %}

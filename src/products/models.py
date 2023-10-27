@@ -19,12 +19,12 @@ LABEL_CHOICES = (
 
 class Product(models.Model):
     title = models.CharField(max_length=128)
-    description = models.TextField()
+    description = models.TextField(null=True, blank=True)
     price = models.DecimalField(default=9.90, max_digits=8, decimal_places=2)
     discounted_price = models.DecimalField(default=0.00, max_digits=6, decimal_places=2)
     category = models.CharField(choices=CATEGORY_CHOICES, max_length=2)
     label = models.CharField(choices=LABEL_CHOICES, max_length=1)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(null=True, blank=True, unique=True)
     image = models.ImageField(upload_to='product_images/')
 
     def __str__(self):
@@ -37,6 +37,10 @@ class Product(models.Model):
     def get_add_to_cart_url(self):
         return reverse("product:add-to-cart", kwargs={'slug': self.slug})
     
+    def get_decrease_from_cart_url(self):
+        '''Decrease product quantity by 1'''
+        return reverse("product:decrease-from-cart", kwargs={'slug': self.slug})
+
     def get_remove_from_cart_url(self):
         return reverse("product:remove-from-cart", kwargs={'slug': self.slug})
 

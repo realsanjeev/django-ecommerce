@@ -1,59 +1,69 @@
 {% extends "base.html" %}
 {% load arithmetic_operator %}
+
 {% block content %}
-  <main class="mt-5 pt-4">
-    <div class="container mt-5">
-        <strong><h1>Order Summary</h1></strong>
-        <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Product Title</th>
-                <th scope="col">Price</th>
-                <th scope="col">Quantity</th>
-                <th scope="col">Total Price</th>
-              </tr>
-            </thead>
-            <tbody>
-                {% for order_product in order.products.all %}
-              <tr>
-                <th scope="row">{{ forloop.counter }}</th>
-                <td>{{ order_product.product.title }} <a href="{{ order_product.product.get_absolute_url }}" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square" style="color: #0058f0;"></i></td>
-                <td>${{ order_product.product.price }}</td>
-                <td><a href="{{ order_product.product.get_remove_from_cart_url }}"><i class="fa-regular fa-subtract" style="color: #e70d0d;"></i></a>
-                  {{ order_product.quantity }}
-                  <a href="{{ order_product.product.get_add_to_cart_url }}"><i class="fa-regular fa-plus" style="color: #16f406;"></i></a></td>
-                <!-- multiply in built template -->
-                <!-- <td>${% widthratio order_product.product.price 1 order_product.quantity %}</td> -->
-                <td>${{ order_product.quantity| multiply:order_product.product.price }}</td>
-              </tr>
-              
-              {% empty %}
-              <tr>
-              <td colspan="5">Your Cart is Empty</td>
-              </tr>
-              <tr>
-                <td colspan="5">
-                  <a class="btn btn-primary float-end" href="/">Continue Shopping</a>
-                </td>
-              </tr>
-              {% endfor %}
-              {% if order.get_total_price %}
-              <tr>
-                <td colspan="4"><strong  class="float-end">Total</strong></td>
-                <td><strong>${{ order.get_total_price }}</strong></td>
-              </tr>
-              <tr>
-                <td colspan="5">
-                  <a class="btn btn-warning float-end" href="/checkout">Proceed to Checkout</a>
-                  <a class="btn btn-primary float-end me-3" href="/">Continue Shopping</a>
-                </td>
-              </tr>
-              
-              {% endif %}
-            </tbody>
-          </table>
-    </div>
-  </main>
+<main class="mt-5 pt-4">
+  <div class="container mt-5">
+    <strong>
+      <h1>Order Summary</h1>
+    </strong>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Product Title</th>
+          <th scope="col">Price</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Total Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order_product in order.products.all %}
+        <tr>
+          <th scope="row">{{ forloop.counter }}</th>
+          <td>{{ order_product.product.title }} <a href="{{ order_product.product.get_absolute_url }}"
+              target="_blank"><i class="fa-solid fa-arrow-up-right-from-square" style="color: #0058f0;"></i></a>
+              <a href="{{ order_product.product.get_remove_from_cart_url }}" class="float-end"><i class="fa-solid fa-trash-can" style="color: #e71313;"></i></a>
+            </td>
+          <td>${% if order_product.product.discounted_price %}{{ order_product.product.discounted_price }}{% else %}{{ order_product.product.price }}{% endif %}</td>
+          <td><a href="{{ order_product.product.get_decrease_from_cart_url }}"><i class="fas fa-minus"
+                style="color: #e70d0d;"></i></a>
+            {{ order_product.quantity }}
+            <a href="{{ order_product.product.get_add_to_cart_url }}"><i class="fa-regular fa-plus"
+                style="color: #16f406;"></i></a>
+          </td>
+          <!-- multiply in built template -->
+          <!-- <td>${% widthratio order_product.product.price 1 order_product.quantity %}</td> -->
+          <!-- <td>${{ order_product.quantity| multiply:order_product.product.price }}</td> -->
+          <td>${{ order_product.get_total_product_price }} {% if order_product.get_saving %}<span class="badge bg-primary text-white bg-opacity-75">Saving ${{ order_product.get_saving }}</span>{% endif %}</td>
+        </tr>
+
+        {% empty %}
+        <tr>
+          <td colspan="5">Your Cart is Empty</td>
+        </tr>
+        <tr>
+          <td colspan="5">
+            <a class="btn btn-primary float-end" href="/">Continue Shopping</a>
+          </td>
+        </tr>
+        {% endfor %}
+        {% if order.get_total_price %}
+        <tr>
+          <td colspan="4"><strong class="float-end">Total</strong></td>
+          <td><strong>${{ order.get_total_price }}</strong></td>
+        </tr>
+        <tr>
+          <td colspan="5">
+            <a class="btn btn-warning float-end" href="/checkout">Proceed to Checkout</a>
+            <a class="btn btn-primary float-end me-3" href="/">Continue Shopping</a>
+          </td>
+        </tr>
+
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</main>
 
 {% endblock content %}
