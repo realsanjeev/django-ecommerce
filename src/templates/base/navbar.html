@@ -39,11 +39,25 @@
                         <span class="d-none d-sm-inline-block">Cart</span>
                     </a>
                 </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      <!-- {{ request.user.full_name }} -->
+                      <img src="{{ request.user.profile_pics.url }}" alt="" width="30" height="24" class="d-inline-block align-text-top">
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <li><a class="dropdown-item" href="#">Profile</a></li>
+                      <li><a class="dropdown-item" href="#">Another action</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a></li>
+                    </ul>
+                  </li>
+                  {% comment %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'account_logout' %}">
                         <span class="d-none d-sm-inline-block">Logout</span>
                     </a>
                 </li>
+                {% endcomment %}
             </ul>
         {% else %}
             <ul class="navbar-nav">

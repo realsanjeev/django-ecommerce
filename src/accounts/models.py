@@ -51,8 +51,8 @@ class UserProfile(AbstractUser, PermissionsMixin):
     phone = models.CharField(max_length=15)  # Corrected field name: phone_no -> phone
     gender = models.CharField(max_length=15, 
                               choices=GENDER_CHOICES, default="rather_not_say")
-    profile_pics = models.ImageField(upload_to=upload_image_path, 
-                                     null=True, blank=True)
+    profile_pics = models.ImageField(upload_to=upload_image_path,
+                                     default='accounts/blank_avatar.png')
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False )
 

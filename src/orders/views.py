@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 
 from .models import Order
 from .forms import CheckoutForm
+from address.models import Address
 
 class OrderSummary(View):
     template_name = 'order_summary.html'
@@ -36,13 +37,35 @@ class CheckoutView(View):
         return render(self.request, self.template_name, context)
     
     def post(self, *args, **kwargs):
+        user = self.request.user
         form = CheckoutForm(self.request.POST or None)
-        order = Order.objects.get(user=self.request.user, ordered=False)
+        try:
+            order = Order.objects.get(user=self.request.user, ordered=False)
+            '''Procceed if only user have active order'''
+        except ObjectDoesNotExist:
+            messages.error("You donot have active order.")
+            return redirect('order:checkout')
         if form.is_valid():
             cleaned_data = form.cleaned_data
             print("*"*32)
             print(cleaned_data)
             print("*"*32)
-            return redirect('order:checkout')
+            street_address = form.cleaned_data.get('street_address')
+            apartment_address = form.cleaned_data.get('apartment_address')
+            country = form.cleaned_data.get('shipping_country')
+            zip = form.cleaned_data.get('zip')
+            payment_option = form.cleaned_data.get('payment_option')
+            billing_address = Address(user=user,
+                                      street_address=street_address,
+                                      apartment_address=apartment_address,
+                                      country=country,
+                                      zip=zip)
+            billing_address.save()
+            order.billing_address = billing_address
+            order.save()
+            # REdirect to the selected payment option
+            return redirect('payment:payment-home')
+        messages.error(self.request, "Failed to Checkout. Please try again Later!!!")
         return redirect('order:checkout')
+    
 

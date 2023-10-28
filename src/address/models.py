@@ -10,7 +10,7 @@ ADDRESS_CHOICES = (
 class Address(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     street_address = models.CharField(max_length=128)
-    apartmart_address = models.CharField(max_length=128)
+    apartment_address = models.CharField(max_length=128, null=True, blank=True)
     country = CountryField(multiple=False)
     zip = models.CharField(max_length=64)
     address_type = models.CharField(max_length=1, choices=ADDRESS_CHOICES)

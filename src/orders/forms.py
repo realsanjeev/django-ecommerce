@@ -12,19 +12,18 @@ class CheckoutForm(forms.Form):
         widget=forms.TextInput(attrs={
             'class': 'form-control',
             'id': 'floatingInput',
-            'placeholder': "1234 Main St"
-        }))
+        }), strip=True)
 
     apartmart_address = forms.CharField(
         widget=forms.TextInput(attrs={
             'class': 'form-control',
             'id': 'floatingInput',
-            'placeholder': 'Appartment',
-        }), required=False)
+        }), required=False, strip=True)
     shipping_country = CountryField(blank_label='(select country)').formfield(
         required=False,
-        widget=CountrySelectWidget(attrs={'class':'custom-select d-block w-100',
-                                          'id': 'country'}))
+        widget=CountrySelectWidget(attrs={
+            'class':'custom-select d-block w-100',
+            'id': 'country'}))
     zip = forms.CharField(
         widget=forms.TextInput(attrs={
             'class': 'form-control',
@@ -36,4 +35,5 @@ class CheckoutForm(forms.Form):
     payment_option = forms.ChoiceField(
         widget=forms.RadioSelect, choices=PAYMENT_CHOICES
     )
+
 
