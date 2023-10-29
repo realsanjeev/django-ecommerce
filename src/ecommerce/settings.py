@@ -27,7 +27,7 @@ dotenv.read_dotenv(str(ENV_FILE_PATH))
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG') == str(0)
+DEBUG = True if os.environ.get('DEBUG') == str(1) else False
 
 ALLOWED_HOSTS = []
 
@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     "orders",
     "payments",
     "address",
+    'refunds',
 ]
 
 AUTH_USER_MODEL = "accounts.UserProfile"
@@ -182,5 +183,5 @@ LOGIN_REDIRECT_URL = '/'
 ACCOUNT_EMAIL_VERIFICATION = "none"
 
 # stripe key
-STRIPE_SECRET_KEY = "sk_test_51O664eEumPwACrKOP7eTDr786LJG0jhb4GEHjMxoH8FRHWfXusGSVYbL375nZjW6lWOpIsYvlMFkoB9eAlw07xo200NLQcCWp1"
-STRIPE_PUBLISHABLE_KEY = "pk_test_51O664eEumPwACrKOuOV94Yck3a8elc9zCpNauY8cztynp8TyIRth3nyKOBph8cUPb81U1m2Uoe8UbTYLSELrg1RO00vj41go6A"
+STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY")
+STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY")

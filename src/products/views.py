@@ -21,12 +21,17 @@ def add_to_cart(request, slug):
         ordered=False)
     order_qs = Order.objects.filter(user=request.user, ordered=False)
 
+    # get number of quantity from form of product-detail
+    quantity = request.POST.get('quantity', None)
     # check if cart exists for user
     if order_qs.exists():
         order = order_qs.first()
         # check for product in cart
         if order.products.filter(product__slug=product.slug).exists():
-            order_product.quantity += 1
+            if quantity is None:
+                order_product.quantity += 1
+            else:
+                order_product.quantity += quantity
             order_product.save()
             msg = f"Cart now has `{order_product.product.title.upper()}` with quantity {order_product.quantity}....."
             messages.success(request, message=msg)
@@ -39,6 +44,7 @@ def add_to_cart(request, slug):
         order = Order.objects.create(user=request.user, ordered_date=ordered_date)
         order.products.add(order_product)
         return redirect("order:order-summary")
+
 
 def decrease_from_cart(request, slug):
     product = get_object_or_404(Product, slug=slug)

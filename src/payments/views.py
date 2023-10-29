@@ -3,9 +3,11 @@ from django.shortcuts import render, redirect
 from django.conf import settings
 from django.contrib import messages
 from django.views.generic import View
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
-from .models import Payment
-from .forms import PaymentForm
+from .models import Payment, Coupon
+from .forms import PaymentForm, CouponForm
 from orders.models import Order
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -15,6 +17,7 @@ def display_with_dashes(string):
     print(string)
     print("-"*43)
 
+@method_decorator(decorator=login_required, name='dispatch')
 class PaymentView(View):
     def get(self, *args, **kwargs):
         user = self.request.user
@@ -25,6 +28,7 @@ class PaymentView(View):
             return redirect('order:order-summary')
         context = {
             'order': order,
+            'DISPLAY_COUPON_FORM': False,
             'STRIPE_PUBLISHABLE_KEY': settings.STRIPE_PUBLISHABLE_KEY
         }
         return render(self.request, template_name='payment.html', context=context)
@@ -95,4 +99,40 @@ class PaymentView(View):
         except Exception as e:
             messages.error(self.request, "Sorry! We have been notified of your failure. Please try again later...")
             return redirect('/')
-    
+
+def get_coupon(request, code):
+    try:
+        coupon = Coupon.objects.get(code=code, remaining_time__gt=1)
+        return coupon
+    except Coupon.DoesNotExist:
+        messages.warning(request, "This token does not exist!!!")
+        return redirect("order:checkout")
+
+@method_decorator(decorator=login_required, name='dispatch')
+class RedeemCouponView(View):
+    def post(self, *args, **kwargs):
+        display_with_dashes("Redeem coupon view")
+        user = self.request.user
+        form = CouponForm(self.request.POST or None)
+        if form.is_valid():
+            try:
+                code = form.cleaned_data.get('code')
+                order = Order.objects.get(
+                    user=user, ordered=False
+                )
+                coupon = get_coupon(self.request, code)
+                # one order shuld be associated with only one coupon
+                if order.coupon:
+                    messages.info(self.request, "Coupon already assoiciated with order")
+                    return redirect("order:checkout")
+                order.coupon = coupon
+                order.save()
+                # decrease coupon remaining time
+                order.coupon.remaining_time -= 1
+                order.coupon.save()  # Fixed variable name here from 'coupon' to 'order.coupon'
+                messages.success(self.request, "Successfully added coupon")
+                return redirect("order:checkout")
+
+            except Order.DoesNotExist:
+                messages.warning(self.request, "You don't have an active order to redeem a coupon")  # Fixed typo here
+                return redirect('order:checkout')  # Added return statement

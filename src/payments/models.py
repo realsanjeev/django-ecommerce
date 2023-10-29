@@ -11,3 +11,11 @@ class Payment(models.Model):
 
     def __str__(self):
         return self.user.email
+
+class Coupon(models.Model):
+    code = models.CharField(max_length=16)
+    amount = models.DecimalField(default=1.00, max_digits=5, decimal_places=2)
+    remaining_time = models.IntegerField(default=1) 
+
+    def __str__(self):
+        return f"{self.code}"

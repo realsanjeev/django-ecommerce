@@ -8,7 +8,9 @@ from django.contrib.auth.decorators import login_required
 from .models import Order
 from .forms import CheckoutForm
 from address.models import Address
+from payments.forms import CouponForm
 
+@method_decorator(login_required, name='dispatch')
 class OrderSummary(View):
     template_name = 'order_summary.html'
 
@@ -20,7 +22,7 @@ class OrderSummary(View):
             }
             return render(self.request, template_name=self.template_name, context=context)
         except ObjectDoesNotExist:
-            messages.warining(self.request, "You donot have an active order")
+            messages.warning(self.request, "You donot have an active order")
             return redirect('/')
 
 @method_decorator(login_required, name='dispatch')
@@ -28,11 +30,17 @@ class CheckoutView(View):
     template_name = 'checkout.html'
     def get(self, *args, **kwargs):
         user = self.request.user
-        order = Order.objects.get(user=user, ordered=False)
+        try:
+            order = Order.objects.get(user=user, ordered=False)
+        except Order.DoesNotExist:
+            messages.warning(self.request, "You donot have an active order")
+            return redirect('/')
         form = CheckoutForm()
         context = {
             'form': form,
-            'order': order
+            'couponform': CouponForm(),
+            'order': order,
+            'DISPLAY_COUPON_FORM': True
         }
         return render(self.request, self.template_name, context)
     
@@ -68,4 +76,12 @@ class CheckoutView(View):
         messages.error(self.request, "Failed to Checkout. Please try again Later!!!")
         return redirect('order:checkout')
     
+@login_required
+def history_view(request):
+    template_name = "order-history.html"
+    ordered_carts = Order.objects.filter(user=request.user, ordered=True)
+    context = {
+        'order_lists': ordered_carts
+    }
+    return render(request, template_name=template_name, context=context)
 
