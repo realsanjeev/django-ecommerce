@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}E-commerce| Shopping History{% endblock title %}
+
+{% block content %}
+<main class="pt-4">
+    <div class="container mt-5">
+      <strong>
+        <h1>Order History</h1>
+      </strong>
+      <hr />
+      {% for order in order_lists %}
+      <div>
+        <span>Ref-code: <strong>{{ order.ref_code }}</strong></span> <span class="float-end">Date: <strong>{{ order.ordered_date }}</strong>[{{ order.ordered_date|timesince }} ago]</span>
+      </div>
+      <table class="table {% cycle 'table-primary' 'table-dark' 'table-warning' 'table-secondary' %}">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Product Title</th>
+            <th scope="col">Price</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Total Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order_product in order.products.all %}
+          <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ order_product.product.title }} <a href="{{ order_product.product.get_absolute_url }}"
+                target="_blank"><i class="fa-solid fa-arrow-up-right-from-square" style="color: #0058f0;"></i></a>
+              </td>
+            <td>${% if order_product.product.discounted_price %}{{ order_product.product.discounted_price }}{% else %}{{ order_product.product.price }}{% endif %}</td>
+            <td>
+              {{ order_product.quantity }}
+            </td>
+            <!-- multiply in built template -->
+            <!-- <td>${% widthratio order_product.product.price 1 order_product.quantity %}</td> -->
+            <td>${{ order_product.get_total_product_price }} {% if order_product.get_saving %}<span class="badge bg-primary text-white bg-opacity-75">Saving ${{ order_product.get_saving }}</span>{% endif %}</td>
+          </tr>
+          {% endfor %}
+          {% if order.coupon %}
+          <tr class="bg-success">
+            <td colspan="4"><strong>Coupon</strong></td>
+            <td><strong>-${{ order.coupon.amount }}</strong></td>
+          </tr>
+          {% endif %}
+          <tr>
+            <td colspan="4"><strong>Order Total</strong></td>
+            <td><strong>${{ order.get_total_price }}</strong></td>
+          </tr>
+        </tbody>
+      </table>
+      {% empty %}
+      <div class="container m-5">
+      <h3>You donot have any order purchared yet</h3>
+      <a class="btn btn-primary mb-5" href="/">Continue Shopping</a>
+    </div>
+      {% endfor %}
+    </div>
+  </main>
+{% endblock content %}

@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load arithmetic_operator %}
 
+{% block title %}E-commerce| Order-Summary{% endblock title %}
+
 {% block content %}
 <main class="pt-4">
   <div class="container mt-5">
@@ -49,8 +51,14 @@
         </tr>
         {% endfor %}
         {% if order.get_total_price %}
+        {% if order.coupon %}
+        <tr class="bg-success">
+          <td colspan="4"><strong>Coupon</strong></td>
+          <td><strong>-${{ order.coupon.amount }}</strong></td>
+        </tr>
+        {% endif %}
         <tr>
-          <td colspan="4"><strong class="float-end">Total</strong></td>
+          <td colspan="4"><strong>Order Total</strong></td>
           <td><strong>${{ order.get_total_price }}</strong></td>
         </tr>
         <tr>

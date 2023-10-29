@@ -46,7 +46,9 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                       <li><a class="dropdown-item" href="#">Profile</a></li>
-                      <li><a class="dropdown-item" href="#">Another action</a></li>
+                      
+                      <li><a class="dropdown-item" href="{% url 'order:history' %}">Order history</a></li>
+                      <li><a class="dropdown-item" href="{% url 'refund:request' %}">Request Refund</a></li>
                       <li><hr class="dropdown-divider"></li>
                       <li><a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a></li>
                     </ul>

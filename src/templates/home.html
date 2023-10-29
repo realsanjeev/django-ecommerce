@@ -211,7 +211,7 @@
               
                 <h5>
                   <strong>
-                    <a href="" class="dark-grey-text">{{ product.title }}
+                    <a href="{% url 'product:product-detail' slug=product.slug %}" class="dark-grey-text">{{ product.title }}
                       <span class="badge badge-pill {{product.get_label_display}}-color">NEW</span>
                     </a>
                   </strong>
