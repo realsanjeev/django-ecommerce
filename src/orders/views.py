@@ -23,7 +23,7 @@ class OrderSummary(View):
             return render(self.request, template_name=self.template_name, context=context)
         except ObjectDoesNotExist:
             messages.warning(self.request, "You donot have an active order")
-            return redirect('/')
+            return render(self.request, template_name=self.template_name, context={})
 
 @method_decorator(login_required, name='dispatch')
 class CheckoutView(View):

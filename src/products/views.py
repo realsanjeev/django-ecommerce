@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from django.contrib import messages
+from django.views.generic import ListView
 
 from .models import Product
 from orders.models import OrderProduct, Order
@@ -107,3 +108,12 @@ def remove_from_cart(request, slug):
     else:
         messages.error(request, "You donot have an active order")
         return redirect("product:product-detail", slug=slug)
+    
+class ProductsView(ListView):
+    template_name = "products.html"
+    model = Product
+    paginate_by = 3
+    # overrides objects_list key to user_defined key
+    context_object_name = "products"
+    # for consistent result in pagination
+    ordering = ['title']
