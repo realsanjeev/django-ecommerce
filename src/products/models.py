@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.query import Q, QuerySet
 from django.shortcuts import reverse
 from django.dispatch import receiver
 from django.db.models.signals import pre_save
@@ -17,6 +18,25 @@ LABEL_CHOICES = (
     ('D', 'danger')
 )
 
+class ProductQuerySet(models.QuerySet):
+    def search(self, query):
+        lookup = Q(title__icontains=query) | Q(description__icontains=query)
+        qs = self.filter(lookup).distinct()
+        return qs
+    
+    def search_by_tags(self, tags):
+        return self.filter(category=tags)
+
+class ProductManager(models.Manager):
+    def get_queryset(self, *args, **kwargs) -> QuerySet:
+        return ProductQuerySet(self.model, using=self._db)
+    
+    def search(self, query):
+        return self.get_queryset().search(query)
+    
+    def search_by_tags(self, tags):
+        return self.get_queryset().search_by_category(tags)
+
 class Product(models.Model):
     title = models.CharField(max_length=128)
     description = models.TextField(null=True, blank=True)
@@ -26,6 +46,8 @@ class Product(models.Model):
     label = models.CharField(choices=LABEL_CHOICES, max_length=1)
     slug = models.SlugField(null=True, blank=True, unique=True)
     image = models.ImageField(upload_to='product_images/')
+
+    objects = ProductManager()
 
     def __str__(self):
         return self.title

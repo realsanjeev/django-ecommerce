@@ -57,7 +57,8 @@ INSTALLED_APPS = [
     "orders",
     "payments",
     "address",
-    'refunds',
+    "refunds",
+    "search"
 ]
 
 AUTH_USER_MODEL = "accounts.UserProfile"
