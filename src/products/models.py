@@ -68,3 +68,7 @@ def product_pre_save_slug_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = unique_slug_generator(instance=instance)
 
+@receiver(pre_save, sender=Product)
+def product_pre_save_description(sender, instance, *args, **kwargs):
+    if not instance.description:
+        instance.description = instance.title

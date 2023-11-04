@@ -23,13 +23,13 @@ def add_to_cart(request, slug):
     order_qs = Order.objects.filter(user=request.user, ordered=False)
 
     # get number of quantity from form of product-detail
-    quantity = request.POST.get('quantity', None)
+    quantity = int(request.POST.get('quantity', 0))
     # check if cart exists for user
     if order_qs.exists():
         order = order_qs.first()
         # check for product in cart
         if order.products.filter(product__slug=product.slug).exists():
-            if quantity is None:
+            if not quantity:
                 order_product.quantity += 1
             else:
                 order_product.quantity += quantity
