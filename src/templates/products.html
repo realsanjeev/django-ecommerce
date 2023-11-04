@@ -1,53 +1,16 @@
 {% extends "base.html" %}
+{% block title %}
+    Ecommerce | Products
+    {% if '?tag=' in request.get_full_path %}
+        with tag {{ request.get_full_path|cut:'tag=' }}
+    {% endif %}
+{% endblock %}
 
 {% block content %}
 <main class="mt-5 p-3">
     <div class="container">
-
         <!--Navbar-->
-        <nav class="navbar navbar-expand-lg navbar-dark mdb-color lighten-3 mt-3 mb-5 px-3">
-
-            <!-- Navbar brand -->
-            <span class="navbar-brand">Categories:</span>
-
-            <!-- Collapse button -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <!-- Collapsible content -->
-            <div class="collapse navbar-collapse" id="navbarNav">
-
-                <!-- Links -->
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'search:product-by-category' %}?tags=all">All
-                            <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'search:product-by-category' %}?tag=shirts">Shirts</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'search:product-by-category' %}?tag=sport_wears">Sport wears</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'search:product-by-category' %}?tag=outwears">Outwears</a>
-                    </li>
-                    
-                </ul>
-                <!-- Links -->
-                <form class="form-inline" method="get" action="{% url 'search:product-search' %}">
-                    <div class="md-form my-0">
-                        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"
-                        name="q">
-                    </div>
-                </form>
-            </div>
-            <!-- Collapsible content -->
-
-        </nav>
+        {% include 'product-navbar-snippet.html' %}
         <!--/.Navbar-->
 
         <!--Section: Products v.3-->

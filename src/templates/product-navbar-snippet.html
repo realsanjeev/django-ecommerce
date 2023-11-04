@@ -1,0 +1,42 @@
+<nav class="navbar navbar-expand-lg navbar-dark mdb-color lighten-3 mt-3 mb-5 px-3">
+
+    <!-- Navbar brand -->
+    <span class="navbar-brand">Categories:</span>
+
+    <!-- Collapse button -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+
+        <!-- Links -->
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item {% if request.path == 'products_url' %}active{% endif %}">
+                <a class="nav-link" href="{{ products_url }}">All
+                </a>
+            </li>
+            <li class="nav-item {% if 'tag=shirt' in request.get_full_path %}active{% endif %}">
+                <a class="nav-link" href="{% url 'search:product-by-category' %}?tag=shirt">Shirts</a>
+            </li>
+            <li class="nav-item {% if 'tag=sportwear' in request.get_full_path %}active{% endif %}">
+                <a class="nav-link" href="{% url 'search:product-by-category' %}?tag=sportwear">Sport wears</a>
+            </li>
+            <li class="nav-item {% if 'tag=outwear' in request.get_full_path %}active{% endif %}">
+                <a class="nav-link" href="{% url 'search:product-by-category' %}?tag=outwear">Outwears</a>
+            </li>
+        </ul>
+        
+        <!-- Links -->
+        <form class="form-inline" method="get" action="{% url 'search:product-search' %}">
+            <div class="md-form my-0">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"
+                name="q">
+            </div>
+        </form>
+    </div>
+    <!-- Collapsible content -->
+
+</nav>

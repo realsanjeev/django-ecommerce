@@ -33,9 +33,6 @@ class ProductManager(models.Manager):
     
     def search(self, query):
         return self.get_queryset().search(query)
-    
-    def search_by_tags(self, tags):
-        return self.get_queryset().search_by_category(tags)
 
 class Product(models.Model):
     title = models.CharField(max_length=128)
@@ -70,3 +67,4 @@ class Product(models.Model):
 def product_pre_save_slug_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = unique_slug_generator(instance=instance)
+

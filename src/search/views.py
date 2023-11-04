@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from products.models import Product
+from products.models import Product, CATEGORY_CHOICES
 
 def search_list_view(request):
     paginate_by = 4
@@ -20,11 +20,19 @@ def search_list_view(request):
     return render(request, "search.html", context)
 
 def search_by_category(request):
-    tags = request.GET.get('tags','')
+    tags = request.GET.get('tag','').split(',')[0]
+    qs_products = Product.objects.none()
+
+    # convert tuples in dict
+    category_dict = {
+        'shirt': 'S',
+        'sportwear': 'SW',
+        'outwear': 'OW'
+    }
+    category_type = category_dict.get(tags, '')
+
     if tags:
-        qs_products = Product.objects.search_by_tags('')
-    else:
-        qs_products = Product.objects.all()
+        qs_products = Product.objects.filter(category__iexact=category_type)
     context = {
         "products": qs_products
     }
