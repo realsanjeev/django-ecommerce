@@ -20,30 +20,30 @@ def add_to_cart(request, slug):
         user=request.user,
         product=product,
         ordered=False)
-    order_qs = Order.objects.filter(user=request.user, ordered=False)
+    # get the cart of user or create if no cart for user
+    order, order_created = Order.objects.get_or_create(user=request.user, ordered=False)
 
     # get number of quantity from form of product-detail
-    quantity = int(request.POST.get('quantity', 0))
-    # check if cart exists for user
-    if order_qs.exists():
-        order = order_qs.first()
-        # check for product in cart
-        if order.products.filter(product__slug=product.slug).exists():
-            if not quantity:
-                order_product.quantity += 1
-            else:
-                order_product.quantity += quantity
-            order_product.save()
-            msg = f"Cart now has `{order_product.product.title.upper()}` with quantity {order_product.quantity}....."
-            messages.success(request, message=msg)
-            return redirect("order:order-summary")
-        else:
-            order.products.add(order_product)
-            messages.info(request, "Product is added to cart....")
-            return redirect("order:order-summary")
-    else:
-        order = Order.objects.create(user=request.user, ordered_date=ordered_date)
+    if request.method=="POST":
+        quantity = request.POST.get('quantity') or 1
+        order_product.quantity = int(quantity)
+        order_product.save()
         order.products.add(order_product)
+        msg = f"Cart now has `{order_product.product.title.upper()}` with quantity {order_product.quantity}....."
+        messages.success(request, message=msg)
+        return redirect("order:order-summary")
+    
+    
+    # check for product in cart and add + additional one product in cart
+    if order.products.filter(product__slug=product.slug).exists():
+        order_product.quantity += 1
+        order_product.save()
+        msg = f"Cart now has `{order_product.product.title.upper()}` with quantity {order_product.quantity}....."
+        messages.success(request, message=msg)
+        return redirect("order:order-summary")
+    else:
+        order.products.add(order_product)
+        messages.info(request, "Product is added to cart....")
         return redirect("order:order-summary")
 
 
