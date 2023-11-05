@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import RegexValidator
 from django.conf import settings
 from django_countries.fields import CountryField
 
@@ -12,7 +13,8 @@ class Address(models.Model):
     street_address = models.CharField(max_length=128)
     apartment_address = models.CharField(max_length=128, null=True, blank=True)
     country = CountryField(multiple=False)
-    zip = models.CharField(max_length=16)
+    zip = models.CharField(max_length=10, 
+                           validators=[RegexValidator(r'^\d{5}$', message='Zip code must be 5 digits.')])
     address_type = models.CharField(max_length=1, choices=ADDRESS_CHOICES)
     default = models.BooleanField(default=False)
 

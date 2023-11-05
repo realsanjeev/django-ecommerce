@@ -49,6 +49,13 @@ class Product(models.Model):
     def __str__(self):
         return self.title
     
+    def save(self, *args, **kwargs):
+        '''validate the discount price is less than regular price'''
+        if self.discounted_price >= self.price:
+            raise ValueError("Discounted price must be less than the regular price.")
+
+        super().save(*args, **kwargs)
+
     def get_absolute_url(self):
         # Replace the following line with your actual logic for generating the URL
         return reverse("product:product-detail", kwargs={'slug': self.slug})
