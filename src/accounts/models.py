@@ -46,15 +46,20 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 class UserProfile(AbstractUser, PermissionsMixin):
+    '''Custom User model
+    '''
     email = models.EmailField(unique=True)
     full_name = models.CharField(max_length=256)
-    phone = models.CharField(max_length=15)  # Corrected field name: phone_no -> phone
+    phone = models.CharField(max_length=15)
     gender = models.CharField(max_length=15, 
                               choices=GENDER_CHOICES, default="rather_not_say")
     profile_pics = models.ImageField(upload_to=upload_image_path,
                                      default='accounts/blank_avatar.png')
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False )
+    
+    one_click_purchasing = models.CharField(max_length=64, blank=True, null=True)
+    one_click_purchasing = models.BooleanField(default=False)
 
     objects = CustomUserManager()
 
