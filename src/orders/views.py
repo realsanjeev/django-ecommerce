@@ -72,6 +72,7 @@ class CheckoutView(View):
             order.billing_address = billing_address
             order.save()
             # REdirect to the selected payment option
+            # for now stripe is only payment option
             return redirect('payment:payment-home')
         messages.error(self.request, "Failed to Checkout. Please try again Later!!!")
         return redirect('order:checkout')

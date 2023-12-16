@@ -33,7 +33,9 @@ class CheckoutForm(forms.Form):
     same_shipping_address = forms.BooleanField(required=False)
     save_info = forms.BooleanField(required=False)
     payment_option = forms.ChoiceField(
-        widget=forms.RadioSelect, choices=PAYMENT_CHOICES
+        widget=forms.RadioSelect, choices=PAYMENT_CHOICES,
+        initial='S',
+        disabled=True
     )
 
 
