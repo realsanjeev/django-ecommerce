@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.views.generic import ListView
+from django.contrib.auth.decorators import login_required
 
 from products.models import Product
 from address.models import Address
@@ -15,11 +16,12 @@ class HomeView(ListView):
     ordering = ['image']
 
 
+@login_required
 def checkout_view(request):
     template_name = 'checkout.html'
     return render(request, template_name)
 
-
+@login_required
 def logout_view(request):
     logout(request)
     return redirect('login')

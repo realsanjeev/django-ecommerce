@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from django.contrib import messages
 from django.views.generic import ListView
+from django.contrib.auth.decorators import login_required
 
 from .models import Product
 from orders.models import OrderProduct, Order
@@ -13,6 +14,7 @@ def product_detail(request, *args, **kwargs):
     context = {"product": product}
     return render(request, template_name, context)
 
+@login_required
 def add_to_cart(request, slug):
     product = get_object_or_404(Product, slug=slug)
     ordered_date = timezone.now()
@@ -46,7 +48,7 @@ def add_to_cart(request, slug):
         messages.info(request, "Product is added to cart....")
         return redirect("order:order-summary")
 
-
+@login_required
 def decrease_from_cart(request, slug):
     product = get_object_or_404(Product, slug=slug)
     order_qs = Order.objects.filter(
@@ -81,6 +83,7 @@ def decrease_from_cart(request, slug):
         messages.error(request, "You donot have an active order")
         return redirect("product:product-detail", slug=slug)
 
+@login_required
 def remove_from_cart(request, slug):
     product = get_object_or_404(Product, slug=slug)
     order_qs = Order.objects.filter(

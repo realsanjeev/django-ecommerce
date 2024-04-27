@@ -12,6 +12,34 @@ Key Features:
 
 This project serves as an excellent foundation for building a fully functional e-commerce website. It incorporates best practices in Django development to ensure scalability, security, and maintainability. Feel free to explore, modify, and enhance this project to meet specific business requirements and create a thriving online store.
 
+## Running the Application
+
+1. Clone the repository and navigate to the working directory:
+    ```bash
+    git clone https://github.com/realsanjeev/django-ecommerce.git
+    cd django-ecommerce
+    ```
+
+2. Create a virtual environment and install the requirements:
+    ```bash
+    python -m venv venv
+    source venv/bin/activate
+    pip install -r requirements.txt
+    ```
+
+3. **Or If you have Docker installed on your machine, you can use the provided Dockerfile to run the project**
+
+   First, build the Docker image:
+    ```bash
+    docker build -t django-ecommerce .
+    ```
+
+   Then, run the Docker container:
+    ```bash
+    docker run -p 8000:8000 --name django-ecommerce-container django-ecommerce
+    ```
+
+This will start the Django e-commerce application and make it accessible at `http://localhost:8000` on your local machine.
 
 ## Contributing
 
