@@ -41,6 +41,8 @@ This project serves as an excellent foundation for building a fully functional e
 
 This will start the Django e-commerce application and make it accessible at `http://localhost:8000` on your local machine.
 
+You can try to access supperuser or login to the app using admin name `admin@admin.com` and password for it is `admin`
+
 ## Contributing
 
 Contributions are welcome! If you find any issues or want to add new features, feel free to submit a pull request.
