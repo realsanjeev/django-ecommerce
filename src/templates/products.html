@@ -82,7 +82,7 @@ with tag {{ request.get_full_path|cut:'tag=' }}
             <nav class="d-flex justify-content-center wow fadeIn">
                 <ul class="pagination pg-blue">
 
-                    <!--Arrow left-->
+                    <!-- Arrow left -->
                     {% if page_obj.has_previous %}
                     <li class="page-item">
                         <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
@@ -92,23 +92,28 @@ with tag {{ request.get_full_path|cut:'tag=' }}
                     </li>
                     {% endif %}
 
+                    {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
                     <li class="page-item active">
-                        <a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}
+                        <a class="page-link" href="?page={{ num }}">{{ num }}
                             <span class="sr-only">(current)</span>
                         </a>
-                        <!-- </li>
-          <li class="page-item">
-            <a class="page-link" href="#">2</a>
-          </li> -->
-
-                        {% if page_obj.has_next %}
-                    <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                            <span class="sr-only">Next</span>
-                        </a>
                     </li>
-                    {% endif %}
+                    {% elif num > page_obj.number|add:'-2' and num < page_obj.number|add:'2' %} <li class="page-item">
+                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+
+                        <!-- Arrow right -->
+                        {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                        {% endif %}
                 </ul>
             </nav>
             {% endif %}
