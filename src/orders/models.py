@@ -46,7 +46,7 @@ class Order(models.Model):
     ref_code = models.CharField(max_length=32)
     products = models.ManyToManyField(OrderProduct)
     start_date = models.DateTimeField(auto_now_add=True)
-    ordered_date = models.DateTimeField()
+    ordered_date = models.DateTimeField(auto_now_add=True)
     ordered = models.BooleanField(default=False)
     shipping_address = models.ForeignKey(Address, related_name='shipping_address',
                                          on_delete=models.SET_NULL, blank=True, null=True)
