@@ -86,3 +86,7 @@ def history_view(request):
     }
     return render(request, template_name=template_name, context=context)
 
+@login_required
+def pdf_history_view(request):
+    pass
+
