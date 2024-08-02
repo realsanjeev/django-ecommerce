@@ -1,3 +1,13 @@
+import io
+from reportlab.pdfgen import canvas
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.units import inch
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+
+from django.utils import timezone
+from django.http import FileResponse, HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import View
 from django.contrib import messages
@@ -86,7 +96,73 @@ def history_view(request):
     }
     return render(request, template_name=template_name, context=context)
 
-@login_required
-def pdf_history_view(request):
-    pass
 
+@login_required
+def generate_history_pdf(request):
+    # Create a file-like buffer to receive PDF data
+    buffer = io.BytesIO()
+
+    # Create the PDF object, using buffer as its file
+    doc = SimpleDocTemplate(buffer, pagesize=letter, title="Order History")
+    elements = []
+
+    # Add title to the PDF
+    title = "Real Django-Ecommerce"
+    user = request.user.username
+    styles = getSampleStyleSheet()
+    title_style = styles['Title']
+    elements.append(Paragraph(title, title_style))
+    elements.append(Paragraph(f"Email: {user}"))
+    current_datetime = timezone.now().strftime("%Y-%m-%d %H:%M:%S")
+    elements.append(Paragraph(f"Requested Date: {current_datetime}"))
+
+    # Add a horizontal line
+    elements.append(Spacer(1, 12))
+    elements.append(Paragraph("<hr/>", styles['Normal']))
+
+    # Prepare data for the table
+    data = [
+        ["Order ID", "Product", "Quantity", "Price"],  # Column headers
+    ]
+
+    # Retrieve orders for the current user
+    orders = Order.objects.filter(user=request.user, ordered=True)
+
+    # Populate table data with order details
+    for order in orders:
+        for ordered_product in order.products.all():
+            data.append([
+                str(order.id),
+                ordered_product.product.title,
+                str(ordered_product.quantity),
+                f"${ordered_product.get_total_product_price():.2f}"
+            ])
+
+    # Create a Table object
+    table = Table(data)
+    
+    # Add style to the Table
+    table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
+    ]))
+
+    # Add the table to the elements
+    elements.append(Spacer(1, 12))  # Spacer to add space between the line and table
+    elements.append(table)
+
+    # Build the PDF
+    doc.build(elements)
+    
+    # Seek to the beginning of the buffer
+    buffer.seek(0)
+
+    # Return the PDF as an HttpResponse with inline disposition
+    response = HttpResponse(buffer, content_type='application/pdf')
+    response['Content-Disposition'] = 'inline; filename="history.pdf"'
+    
+    return response

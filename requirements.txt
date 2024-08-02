@@ -7,4 +7,5 @@ django-crispy-forms==2.1
 django-dotenv
 crispy-bootstrap5
 stripe==9.4.0
+reportlab # for generating the PDF files
 pre-commit==3.7.1
