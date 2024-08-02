@@ -1,7 +1,9 @@
 from django import template
+
 from orders.models import Order
 
 register = template.Library()
+
 
 @register.filter
 def cart_item_count(user):

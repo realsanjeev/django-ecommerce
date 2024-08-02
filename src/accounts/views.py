@@ -1,10 +1,10 @@
-from django.shortcuts import render, redirect
 from django.contrib.auth import logout
-from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect, render
+from django.views.generic import ListView
 
 from products.models import Product
-from address.models import Address
+
 
 class HomeView(ListView):
     template_name = "home.html"
@@ -13,15 +13,16 @@ class HomeView(ListView):
     # overrides objects_list key to user_defined key
     context_object_name = "products"
     # for consistent result in pagination
-    ordering = ['image']
+    ordering = ["image"]
 
 
 @login_required
 def checkout_view(request):
-    template_name = 'checkout.html'
+    template_name = "checkout.html"
     return render(request, template_name)
+
 
 @login_required
 def logout_view(request):
     logout(request)
-    return redirect('login')
+    return redirect("login")

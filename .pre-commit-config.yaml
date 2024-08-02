@@ -3,7 +3,7 @@
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.3.0  # Use the latest version
+    rev: v4.6.0  # Use the latest version
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
@@ -12,51 +12,27 @@ repos:
       - id: check-merge-conflict
 
   - repo: https://github.com/psf/black
-    rev: 23.3.0  # Use the latest version
+    rev: 24.8.0  # Use the latest version
     hooks:
       - id: black
         language_version: python3.10
 
-  - repo: https://github.com/PyCQA/isort
-    rev: 5.12.0  # Use the latest version
-    hooks:
-      - id: isort
-        language_version: python3.10
+  # - repo: https://github.com/PyCQA/isort
+  #   rev: 5.13.2  # Use the latest version
+  #   hooks:
+  #     - id: isort
+  #       language_version: python3.10
 
-  - repo: https://github.com/PyCQA/flake8
-    rev: 6.0.0  # Use the latest version
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.5.6  # Ruff version.
     hooks:
-      - id: flake8
-        args: [--max-line-length=88]
-        language_version: python3.10
+      - id: ruff
+        args: [--fix]  # Run the linter with the --fix option
+      - id: ruff-format  # Run the formatter
 
-  - repo: https://github.com/PyCQA/pylint
-    rev: v3.0.0  # Use the latest version
-    hooks:
-      - id: pylint
-        language_version: python3.10
-
-  - repo: https://github.com/PyCQA/bandit
-    rev: 1.7.4  # Use the latest version
-    hooks:
-      - id: bandit
-        language_version: python3.10
-
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.2.0  # Use the latest version
-    hooks:
-      - id: mypy
-        language_version: python3.10
-
-  - repo: https://github.com/pre-commit/mirrors-yapf
-    rev: v0.31.0  # Use the latest version
-    hooks:
-      - id: yapf
-        language_version: python3.10
-
-  - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v8.19.0  # Use the latest version
-    hooks:
-      - id: eslint
-        additional_dependencies: ["eslint-plugin-import"]
-        files: \.js$
+  # Uncomment and configure if needed:
+  # - repo: https://github.com/PyCQA/bandit
+  #   rev: 1.7.9  # Use the latest version
+  #   hooks:
+  #     - id: bandit
+  #       language_version: python3.10
