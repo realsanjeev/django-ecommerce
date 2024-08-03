@@ -3,42 +3,42 @@ This Django e-commerce project is a robust web application designed to facilitat
 
 ## Running the Application
 
-1. Clone the repository and navigate to the working directory:
+1. **Clone the Repository and Navigate to the Working Directory:**
     ```bash
     git clone https://github.com/realsanjeev/django-ecommerce.git
     cd django-ecommerce
     ```
 
-2. Create a virtual environment and install the requirements:
+2. **Create a Virtual Environment and Install Requirements:**
     ```bash
     python -m venv venv
     source venv/bin/activate
     pip install -r requirements.txt
     ```
 
-3. Run the app
-    ````bash
+3. **Run the Application:**
+    ```bash
     cd src
-    python manage.py makemigration
+    python manage.py makemigrations
     python manage.py migrate
     python manage.py runserver
     ```
 
-**Or If you have Docker installed on your machine, you can use the provided Dockerfile to run the project**
+**Alternatively, if you have Docker installed, you can use the provided Dockerfile to run the project:**
 
-   First, build the Docker image:
-    ```bash
-    docker build -t django-ecommerce .
-    ```
+   1. **Build the Docker Image:**
+        ```bash
+        docker build -t django-ecommerce .
+        ```
 
-   Then, run the Docker container:
-    ```bash
-    docker run -p 8000:8000 --name django-ecommerce-container django-ecommerce
-    ```
+   2. **Run the Docker Container:**
+        ```bash
+        docker run -p 8000:8000 --name django-ecommerce-container django-ecommerce
+        ```
 
-This will start the Django e-commerce application and make it accessible at `http://localhost:8000` on your local machine.
+This will start the Django e-commerce application, making it accessible at `http://localhost:8000` on your local machine.
 
-You can try to access supperuser or login to the app using admin name `admin@admin.com` and password for it is `admin`
+You can log in to the app using the superuser credentials: `admin@admin.com` with the password `admin`.
 
 ### Formatting Code with `pre-commit`
 
