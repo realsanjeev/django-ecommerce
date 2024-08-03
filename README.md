@@ -1,17 +1,6 @@
 # Django Ecommerce
 This Django e-commerce project is a robust web application designed to facilitate online shopping experiences. It offers a user-friendly interface for customers to browse through a wide range of products, add items to their cart, and securely complete their purchases. The platform includes features for product categorization, user authentication, and order management.
 
-Key Features:
-- User-friendly product catalog with detailed descriptions and images.
-- User authentication and account management for personalized shopping experiences.
-- Shopping cart functionality for adding, modifying, and removing items.
-- Secure checkout process with payment integration.
-- Order history and tracking for customers.
-- Admin interface for managing products, orders, and user accounts.
-- Responsive design for seamless browsing on various devices.
-
-This project serves as an excellent foundation for building a fully functional e-commerce website. It incorporates best practices in Django development to ensure scalability, security, and maintainability. Feel free to explore, modify, and enhance this project to meet specific business requirements and create a thriving online store.
-
 ## Running the Application
 
 1. Clone the repository and navigate to the working directory:
@@ -27,7 +16,15 @@ This project serves as an excellent foundation for building a fully functional e
     pip install -r requirements.txt
     ```
 
-3. **Or If you have Docker installed on your machine, you can use the provided Dockerfile to run the project**
+3. Run the app
+    ````bash
+    cd src
+    python manage.py makemigration
+    python manage.py migrate
+    python manage.py runserver
+    ```
+
+**Or If you have Docker installed on your machine, you can use the provided Dockerfile to run the project**
 
    First, build the Docker image:
     ```bash
@@ -54,6 +51,28 @@ To update the hooks to their latest versions, execute:
 ```bash
 pre-commit autoupdate
 ```
+
+### Key Features:
+- User-friendly product catalog with detailed descriptions and images.
+- User authentication and account management for personalized shopping experiences.
+- Shopping cart functionality for adding, modifying, and removing items.
+- Secure checkout process with payment integration.
+- Order history and tracking for customers.
+- Admin interface for managing products, orders, and user accounts.
+- Responsive design for seamless browsing on various devices.
+
+This project serves as an excellent foundation for building a fully functional e-commerce website. It incorporates best practices in Django development to ensure scalability, security, and maintainability. Feel free to explore, modify, and enhance this project to meet specific business requirements and create a thriving online store.
+
+### Demo Image
+**Authentication Feature Image**
+
+![authentication Feature](images/authentication_image.png)
+
+**Product Ordereing Process**
+![Product order Process](images/product_order_process.png)
+
+**Other Features**
+![Other Features](images/other_features.png)
 
 ## Contributing
 

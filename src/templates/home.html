@@ -176,15 +176,14 @@
 
               <h5>
                 <strong>
-                  <a href="{% url 'product:product-detail' slug=product.slug %}" class="dark-grey-text">{{ product.title
-                    }}
-                    <span class="badge badge-pill {{product.get_label_display}}-color">
+                  <a href="{% url 'product:product-detail' slug=product.slug %}" class="dark-grey-text">{{ product.title }}
+                    <span class="badge badge-pill {{ product.get_label_display }}-color">
                       {% if product.label == 'P' %}
-                      Trending
+                        Trending
                       {% elif product.label == 'D' %}
-                      New
+                        New
                       {% else %}
-                      Special
+                        Special
                       {% endif %}</span>
                   </a>
                 </strong>
