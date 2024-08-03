@@ -17,12 +17,6 @@ repos:
       - id: black
         language_version: python3.10
 
-  # - repo: https://github.com/PyCQA/isort
-  #   rev: 5.13.2  # Use the latest version
-  #   hooks:
-  #     - id: isort
-  #       language_version: python3.10
-
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.5.6  # Ruff version.
     hooks:
@@ -30,9 +24,8 @@ repos:
         args: [--fix]  # Run the linter with the --fix option
       - id: ruff-format  # Run the formatter
 
-  # Uncomment and configure if needed:
-  # - repo: https://github.com/PyCQA/bandit
-  #   rev: 1.7.9  # Use the latest version
-  #   hooks:
-  #     - id: bandit
-  #       language_version: python3.10
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.9  # Use the latest version
+    hooks:
+      - id: bandit
+        language_version: python3.10
