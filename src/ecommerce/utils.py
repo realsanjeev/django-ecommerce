@@ -1,4 +1,4 @@
-import random
+import secrets
 import string
 
 from django.utils.text import slugify
@@ -6,7 +6,7 @@ from django.utils.text import slugify
 
 def random_string_generator(size=10):
     characters = string.ascii_letters + string.digits
-    return "".join(random.choice(characters) for _ in range(size))
+    return "".join(secrets.choice(characters) for _ in range(size))
 
 
 def unique_slug_generator(instance, new_slug: str = None):
