@@ -43,6 +43,18 @@ This will start the Django e-commerce application and make it accessible at `htt
 
 You can try to access supperuser or login to the app using admin name `admin@admin.com` and password for it is `admin`
 
+### Formatting Code with `pre-commit`
+
+To run the `pre-commit` hook and format your code, use the following command:
+```bash
+pre-commit run --all-files
+```
+
+To update the hooks to their latest versions, execute:
+```bash
+pre-commit autoupdate
+```
+
 ## Contributing
 
 Contributions are welcome! If you find any issues or want to add new features, feel free to submit a pull request.

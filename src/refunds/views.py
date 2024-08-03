@@ -1,31 +1,31 @@
-from django.shortcuts import render, redirect
-from django.views.generic import View
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect, render
 from django.utils.decorators import method_decorator
+from django.views.generic import View
+
+from orders.models import Order
 
 from .forms import RefundForm
 from .models import Refund
-from orders.models import Order
 
-@method_decorator(decorator=login_required, name='dispatch')
+
+@method_decorator(decorator=login_required, name="dispatch")
 class RefundRequestView(View):
     def get(self, *args, **kwargs):
         form = RefundForm()
-        context = {
-            'form': form
-        }
-        return render(self.request, 'request_refund.html', context=context)
-    
+        context = {"form": form}
+        return render(self.request, "request_refund.html", context=context)
+
     def post(self, *args, **kwargs):
-        form =RefundForm(self.request.POST or None)
+        form = RefundForm(self.request.POST or None)
         if form.is_valid():
-            print("*"*12)
+            print("*" * 12)
             print(form.cleaned_data)
-            print("*"*43)
-            ref_code = form.cleaned_data.get('ref_code')
-            message = form.cleaned_data.get('message')
-            email = form.cleaned_data.get('email')
+            print("*" * 43)
+            ref_code = form.cleaned_data.get("ref_code")
+            message = form.cleaned_data.get("message")
+            email = form.cleaned_data.get("email")
 
             # edit the order
             try:
@@ -37,9 +37,13 @@ class RefundRequestView(View):
                 refund = Refund(order=order, reason=message, email=email)
                 refund.save()
 
-                messages.info(self.request, "Your request was received. We will get back soon!!")
-                return redirect('refund:request')
+                messages.info(
+                    self.request, "Your request was received. We will get back soon!!"
+                )
+                return redirect("refund:request")
             except Order.DoesNotExist:
-                messages.warning(self.request, "This order doesnot exist or order haven't hasnot checkout yet!!")
-                return redirect('refund:request')
-
+                messages.warning(
+                    self.request,
+                    "This order doesnot exist or order haven't hasnot checkout yet!!",
+                )
+                return redirect("refund:request")

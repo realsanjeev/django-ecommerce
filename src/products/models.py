@@ -1,38 +1,33 @@
 from django.db import models
 from django.db.models.query import Q, QuerySet
-from django.shortcuts import reverse
-from django.dispatch import receiver
 from django.db.models.signals import pre_save
+from django.dispatch import receiver
+from django.shortcuts import reverse
 
 from ecommerce.utils import unique_slug_generator
 
-CATEGORY_CHOICES = (
-    ('S', 'Shirt'),
-    ('SW', 'Sport wear'),
-    ('OW', 'Out wear')
-)
+CATEGORY_CHOICES = (("S", "Shirt"), ("SW", "Sport wear"), ("OW", "Out wear"))
 
-LABEL_CHOICES = (
-    ('P', 'primary'),
-    ('S', 'secondary'),
-    ('D', 'danger')
-)
+LABEL_CHOICES = (("P", "primary"), ("S", "secondary"), ("D", "danger"))
+
 
 class ProductQuerySet(models.QuerySet):
     def search(self, query):
         lookup = Q(title__icontains=query) | Q(description__icontains=query)
         qs = self.filter(lookup).distinct()
         return qs
-    
+
     def search_by_tags(self, tags):
         return self.filter(category=tags)
+
 
 class ProductManager(models.Manager):
     def get_queryset(self, *args, **kwargs) -> QuerySet:
         return ProductQuerySet(self.model, using=self._db)
-    
+
     def search(self, query):
         return self.get_queryset().search(query)
+
 
 class Product(models.Model):
     title = models.CharField(max_length=128)
@@ -42,15 +37,15 @@ class Product(models.Model):
     category = models.CharField(choices=CATEGORY_CHOICES, max_length=2)
     label = models.CharField(choices=LABEL_CHOICES, max_length=1)
     slug = models.SlugField(null=True, blank=True, unique=True)
-    image = models.ImageField(upload_to='product_images/')
+    image = models.ImageField(upload_to="product_images/")
 
     objects = ProductManager()
 
     def __str__(self):
         return self.title
-    
+
     def save(self, *args, **kwargs):
-        '''validate the discount price is less than regular price'''
+        """validate the discount price is less than regular price"""
         if self.discounted_price >= self.price:
             raise ValueError("Discounted price must be less than the regular price.")
 
@@ -58,22 +53,24 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         # Replace the following line with your actual logic for generating the URL
-        return reverse("product:product-detail", kwargs={'slug': self.slug})
-    
+        return reverse("product:product-detail", kwargs={"slug": self.slug})
+
     def get_add_to_cart_url(self):
-        return reverse("product:add-to-cart", kwargs={'slug': self.slug})
-    
+        return reverse("product:add-to-cart", kwargs={"slug": self.slug})
+
     def get_decrease_from_cart_url(self):
-        '''Decrease product quantity by 1'''
-        return reverse("product:decrease-from-cart", kwargs={'slug': self.slug})
+        """Decrease product quantity by 1"""
+        return reverse("product:decrease-from-cart", kwargs={"slug": self.slug})
 
     def get_remove_from_cart_url(self):
-        return reverse("product:remove-from-cart", kwargs={'slug': self.slug})
+        return reverse("product:remove-from-cart", kwargs={"slug": self.slug})
+
 
 @receiver(pre_save, sender=Product)
 def product_pre_save_slug_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = unique_slug_generator(instance=instance)
+
 
 @receiver(pre_save, sender=Product)
 def product_pre_save_description(sender, instance, *args, **kwargs):
